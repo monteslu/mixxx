@@ -74,6 +74,12 @@ class EngineSync : public SyncableListener {
     void onCallbackStart(mixxx::audio::SampleRate sampleRate, std::size_t bufferSize);
     void onCallbackEnd(mixxx::audio::SampleRate sampleRate, std::size_t bufferSize);
 
+    /// Returns the Syncable for a given group name (e.g., "[Channel1]").
+    Syncable* getSyncableForGroup(const QString& group);
+
+    /// Returns the InternalClock syncable.
+    Syncable* getInternalClock() const;
+
   private:
     /// Iterate over decks, and based on sync and play status, pick a new Leader, or return the
     /// explicit leader if the one has been selected. If triggering_syncable is not null, we treat
@@ -135,9 +141,6 @@ class EngineSync : public SyncableListener {
     /// Iff there is a single playing syncable in sync mode, return it.
     /// This is used to initialize leader params.
     Syncable* getUniquePlayingSyncedDeck() const;
-
-    /// Only for testing. Do not use.
-    Syncable* getSyncableForGroup(const QString& group);
 
     /// Only for testing. Do not use.
     Syncable* getLeaderSyncable() override {

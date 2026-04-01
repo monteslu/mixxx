@@ -19,6 +19,7 @@
 #include "engine/enginexfader.h"
 #include "engine/sidechain/enginesidechain.h"
 #include "engine/sync/enginesync.h"
+#include "engine/sync/smartfadercontrol.h"
 #include "mixer/playermanager.h"
 #include "moc_enginemixer.cpp"
 #include "preferences/configobject.h"
@@ -129,6 +130,8 @@ EngineMixer::EngineMixer(UserSettingsPointer pConfig,
                   static_cast<double>(pConfig->getValue(
                           ConfigKey(group, "keylock_engine"),
                           EngineBuffer::defaultKeylockEngine())))),
+          m_pSmartFaderControl(std::make_unique<SmartFaderControl>(
+                  group, m_pEngineSync.get())),
           m_mainGainOld(0.0),
           m_boothGainOld(0.0),
           m_headphoneMainGainOld(0.0),
@@ -233,6 +236,9 @@ std::span<const CSAMPLE> EngineMixer::getSidechainBuffer() const {
 void EngineMixer::processChannels(std::size_t bufferSize) {
     // Update internal sync lock rate.
     m_pEngineSync->onCallbackStart(m_sampleRate, bufferSize);
+
+    // Update smart fader BPM interpolation based on crossfader position.
+    m_pSmartFaderControl->process();
 
     m_activeBusChannels[EngineChannel::LEFT].clear();
     m_activeBusChannels[EngineChannel::CENTER].clear();
@@ -480,11 +486,7 @@ void EngineMixer::process(const std::size_t bufferSize) {
 
     // Calculate the crossfader gains for left and right side of the crossfader
     CSAMPLE_GAIN crossfaderLeftGain, crossfaderRightGain;
-    EngineXfader::getXfadeGains(m_pCrossfader->get(), m_pXFaderCurve->get(),
-                                m_pXFaderCalibration->get(),
-                                m_pXFaderMode->get(),
-                                m_pXFaderReverse->toBool(),
-                                &crossfaderLeftGain, &crossfaderRightGain);
+    EngineXfader::getXfadeGains(m_pCrossfader->get(), m_pXFaderCurve->get(), m_pXFaderCalibration->get(), m_pXFaderMode->get(), m_pXFaderReverse->toBool(), &crossfaderLeftGain, &crossfaderRightGain);
 
     // Make the mix for each crossfader orientation output bus.
     // m_mainGain takes care of applying the attenuation from
@@ -546,7 +548,7 @@ void EngineMixer::process(const std::size_t bufferSize) {
                 static_cast<int>(bufferSize));
 
         MicMonitorMode configuredMicMonitorMode = static_cast<MicMonitorMode>(
-            static_cast<int>(m_pMicMonitorMode->get()));
+                static_cast<int>(m_pMicMonitorMode->get()));
 
         // Process main, booth, and record/broadcast buffers according to the
         // MicMonitorMode configured in DlgPrefSound

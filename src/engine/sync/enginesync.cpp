@@ -616,6 +616,10 @@ EngineChannel* EngineSync::getLeaderChannel() const {
     return m_pLeaderSyncable ? m_pLeaderSyncable->getChannel() : nullptr;
 }
 
+Syncable* EngineSync::getInternalClock() const {
+    return m_pInternalClock;
+}
+
 Syncable* EngineSync::getSyncableForGroup(const QString& group) {
     foreach (Syncable* pSyncable, m_syncables) {
         if (pSyncable->getGroup() == group) {

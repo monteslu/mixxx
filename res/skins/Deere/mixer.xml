@@ -165,6 +165,24 @@
                 </Connection>
               </WidgetGroup>
 
+              <!-- Smart Fader toggle button -->
+              <PushButton>
+                <ObjectName>SmartFaderButton</ObjectName>
+                <Size>40f,22f</Size>
+                <NumberStates>2</NumberStates>
+                <State>
+                  <Number>0</Number>
+                  <Text>Smart</Text>
+                </State>
+                <State>
+                  <Number>1</Number>
+                  <Text>Smart</Text>
+                </State>
+                <Connection>
+                  <ConfigKey>[Master],smart_fader_enabled</ConfigKey>
+                </Connection>
+              </PushButton>
+
               <!-- Slider background is highlighted orange if AutoDJ is enabled -->
               <WidgetGroup>
                 <ObjectName>Crossfader</ObjectName>

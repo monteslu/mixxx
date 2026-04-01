@@ -1364,6 +1364,7 @@ add_library(
   src/engine/sidechain/networkoutputstreamworker.cpp
   src/engine/sync/enginesync.cpp
   src/engine/sync/internalclock.cpp
+  src/engine/sync/smartfadercontrol.cpp
   src/engine/sync/synccontrol.cpp
   src/errordialoghandler.cpp
   src/library/analysis/analysisfeature.cpp
@@ -2884,6 +2885,7 @@ if(BUILD_TESTING)
     src/test/enginemixertest.cpp
     src/test/enginemicrophonetest.cpp
     src/test/enginesynctest.cpp
+    src/test/smartfadercontroltest.cpp
     src/test/fileinfo_test.cpp
     src/test/frametest.cpp
     src/test/globaltrackcache_test.cpp

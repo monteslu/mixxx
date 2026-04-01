@@ -1,5 +1,21 @@
 /* LateNight 2.3 // common layout settings */
 
+/* Smart Fader toggle button next to crossfader */
+#SmartFaderButton {
+  font: bold 9px;
+  color: #888;
+  background-color: #0a0a0a;
+  border: 1px solid #444;
+  border-radius: 2px;
+  padding: 1px;
+  margin: 10px 2px 10px 0px;
+}
+#SmartFaderButton[displayValue="1"] {
+  color: #FDFF73;
+  background-color: #1a3000;
+  border: 1px solid #FDFF73;
+}
+
 /************** font settings *************************************************/
 
 #Mixxx,
