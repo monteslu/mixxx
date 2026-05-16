@@ -46,29 +46,10 @@ Item {
         height: crossfaderSlider.height + 20
         width: root.crossfaderWidth
 
-        Skin.Button {
-            id: smartFaderButton
-
-            anchors.left: parent.left
-            anchors.leftMargin: 5
-            anchors.verticalCenter: parent.verticalCenter
-            width: 60
-            text: "Smart"
-            highlight: smartFaderEnabled.value
-            onClicked: smartFaderEnabled.value = !smartFaderEnabled.value
-
-            Mixxx.ControlProxy {
-                id: smartFaderEnabled
-
-                group: "[Master]"
-                key: "smart_fader_enabled"
-            }
-        }
-
         Skin.ControlFader {
             id: crossfaderSlider
 
-            anchors.left: smartFaderButton.right
+            anchors.left: parent.left
             anchors.leftMargin: 5
             anchors.right: parent.right
             anchors.rightMargin: 5
