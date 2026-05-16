@@ -24,7 +24,8 @@ SmartFaderControl::SmartFaderControl(
         const QString& group, EngineSync* pEngineSync)
         : m_pEngineSync(pEngineSync),
           m_pEnabled(std::make_unique<ControlPushButton>(
-                  ConfigKey(group, "smart_fader_enabled"))),
+                  ConfigKey(group, "smart_fader_enabled"),
+                  true /*persist*/)),
           m_pActive(std::make_unique<ControlObject>(
                   ConfigKey(group, "smart_fader_active"), false, false, false)),
           m_pLeftBpm(std::make_unique<ControlObject>(
