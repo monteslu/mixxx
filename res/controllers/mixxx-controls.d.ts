@@ -3409,6 +3409,19 @@ declare namespace MixxxControls {
         | 'crossfader_up_small'
 
         /**
+         * Toggles Smart Fader mode. When enabled, the crossfader controls
+         * BPM interpolation between the left and right decks. Both decks
+         * are synced to a shared tempo that smoothly transitions from the
+         * left deck's original BPM to the right deck's original BPM as the
+         * crossfader moves from left to right.
+         *
+         * @groups [Master]
+         * @range binary
+         * @feedback Smart Fader button
+         */
+        | 'smart_fader_enabled'
+
+        /**
          * Microphone ducking strength
          * This is a ControlPotMeter control.
          *
@@ -4161,7 +4174,50 @@ declare namespace MixxxControls {
              * @since New in version 2.1.0.
              * @readonly
              */
-            'num_effectsavailable';
+            | 'num_effectsavailable'
+
+            /**
+             * Indicates whether Smart Fader is currently active (both decks
+             * have valid BPM and are synced).
+             *
+             * @groups [Master]
+             * @range binary
+             * @feedback None
+             * @readonly
+             */
+            | 'smart_fader_active'
+
+            /**
+             * The captured BPM of the left deck (Channel 1) when Smart Fader
+             * activated, normalized for half/double BPM relationships.
+             *
+             * @groups [Master]
+             * @range BPM value
+             * @feedback None
+             * @readonly
+             */
+            | 'smart_fader_left_bpm'
+
+            /**
+             * The captured BPM of the right deck (Channel 2) when Smart Fader
+             * activated.
+             *
+             * @groups [Master]
+             * @range BPM value
+             * @feedback None
+             * @readonly
+             */
+            | 'smart_fader_right_bpm'
+
+            /**
+             * The current interpolated target BPM based on crossfader position.
+             *
+             * @groups [Master]
+             * @range BPM value
+             * @feedback None
+             * @readonly
+             */
+            | 'smart_fader_target_bpm';
 
         type ReadOnlyAuxiliaryNControl = ReadOnlyAuxiliaryNChannelNMicrophoneNControl;
 

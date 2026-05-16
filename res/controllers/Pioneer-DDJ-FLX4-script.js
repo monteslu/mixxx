@@ -43,8 +43,10 @@
 //        * Pad FX2
 //
 //  Not implemented yet (but might be in the future):
-//      * Smart CFX
-//      * Smart fader
+//      * Smart CFX (no Mixxx equivalent feature; button intentionally unmapped)
+//
+//  Mapped:
+//      * Smart fader (toggles [Master],smart_fader_enabled; LED tracks state)
 
 var PioneerDDJFLX4 = {};
 

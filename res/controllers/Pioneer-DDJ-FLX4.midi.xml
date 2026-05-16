@@ -919,6 +919,18 @@
                     <fourteen-bit-msb/>
                 </options>
             </control>
+            <control>
+                <description>SMART FADER - press - Toggle Smart Fader (crossfader BPM blending)</description>
+                <group>[Master]</group>
+                <key>smart_fader_enabled</key>
+                <status>0x96</status>
+                <midino>0x01</midino>
+                <options>
+                    <Normal/>
+                </options>
+            </control>
+            <!-- SMART FADER +SHIFT (status 0x96, midino 0x09) is intentionally
+                 unmapped; reserved for future use. -->
             <!-- MIXER Section END -->
 
             <!-- EFFECT Section START -->
@@ -3846,6 +3858,17 @@
                 <minimum>0.5</minimum>
             </output>
             <!-- SAMPLER Mode Pads end-->
+
+            <!-- SMART FADER LED -->
+            <output>
+                <group>[Master]</group>
+                <key>smart_fader_enabled</key>
+                <status>0x96</status>
+                <midino>0x01</midino>
+                <on>0x7F</on>
+                <off>0x00</off>
+                <minimum>0.5</minimum>
+            </output>
         </outputs>
     </controller>
 </MixxxControllerPreset>
