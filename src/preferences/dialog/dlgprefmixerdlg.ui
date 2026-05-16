@@ -186,6 +186,22 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxSmartFader">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>When enabled, the crossfader smoothly interpolates the BPM of both decks during the transition.</string>
+        </property>
+        <property name="text">
+         <string>Enable Smart Fader (tempo blending)</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

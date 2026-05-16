@@ -78,8 +78,13 @@ DlgPrefMixer::DlgPrefMixer(
           m_xfCurveCO(make_parented<ControlProxy>(kXfaderCurveKey, this)),
           m_xfReverseCO(make_parented<ControlProxy>(kXfaderReverseKey, this)),
           m_xfCalibrationCO(make_parented<ControlProxy>(kXfaderCalibrationKey, this)),
+          m_smartFaderCO(make_parented<ControlProxy>(
+                  ConfigKey(QStringLiteral("[Master]"),
+                          QStringLiteral("smart_fader_enabled")),
+                  this)),
           m_crossfader(QStringLiteral("[Master]"), QStringLiteral("crossfader")),
           m_xFaderReverse(false),
+          m_smartFaderEnabled(false),
           m_COLoFreq(kLowEqFreqKey),
           m_COHiFreq(kHighEqFreqKey),
           m_lowEqFreq(0.0),
@@ -125,6 +130,14 @@ DlgPrefMixer::DlgPrefMixer(
 #endif
             this,
             &DlgPrefMixer::slotXFaderReverseBoxToggled);
+    connect(checkBoxSmartFader,
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+            &QCheckBox::checkStateChanged,
+#else
+            &QCheckBox::stateChanged,
+#endif
+            this,
+            &DlgPrefMixer::slotSmartFaderBoxToggled);
 
     m_xfModeCO->connectValueChanged(
             this, &DlgPrefMixer::slotXFaderModeControlChanged);
@@ -132,6 +145,8 @@ DlgPrefMixer::DlgPrefMixer(
             this, &DlgPrefMixer::slotXFaderCurveControlChanged);
     m_xfCalibrationCO->connectValueChanged(
             this, &DlgPrefMixer::slotXFaderCalibrationControlChanged);
+    m_smartFaderCO->connectValueChanged(
+            this, &DlgPrefMixer::slotSmartFaderControlChanged);
     m_xfReverseCO->connectValueChanged(
             this, &DlgPrefMixer::slotXFaderReverseControlChanged);
 
@@ -753,6 +768,7 @@ void DlgPrefMixer::applyXFader() {
         m_crossfader.set(0.0 - position);
     }
     m_xfReverseCO->set(m_xFaderReverse ? 1.0 : 0.0);
+    m_smartFaderCO->set(m_smartFaderEnabled ? 1.0 : 0.0);
 
     m_pConfig->setValue(kXfaderModeKey, m_xFaderMode);
     m_pConfig->setValue(kXfaderCurveKey, m_xFaderCurve);
@@ -864,6 +880,7 @@ void DlgPrefMixer::slotUpdateXFader() {
         m_xFaderMode = static_cast<int>(m_xfModeCO->get());
         m_xFaderReverse = static_cast<bool>(m_xfReverseCO->get());
     }
+    m_smartFaderEnabled = m_smartFaderCO->toBool();
 
     updateXFaderWidgets();
 }
@@ -887,6 +904,7 @@ void DlgPrefMixer::updateXFaderWidgets() {
     }
 
     checkBoxReverse->setChecked(m_xFaderReverse);
+    checkBoxSmartFader->setChecked(m_smartFaderEnabled);
 
     drawXfaderDisplay();
 }
@@ -986,6 +1004,10 @@ void DlgPrefMixer::slotXFaderReverseBoxToggled() {
     m_xFaderReverse = checkBoxReverse->isChecked();
 }
 
+void DlgPrefMixer::slotSmartFaderBoxToggled() {
+    m_smartFaderEnabled = checkBoxSmartFader->isChecked();
+}
+
 void DlgPrefMixer::slotXFaderSliderChanged() {
     // m_xFaderCurve is in the range of 1 to 1000 while 50 % slider results
     // to ~2, which represents a medium rounded fader curve.
@@ -1043,6 +1065,15 @@ void DlgPrefMixer::slotXFaderReverseControlChanged(double v) {
         return;
     }
     m_xFaderReverse = reverse;
+    updateXFaderWidgets();
+}
+
+void DlgPrefMixer::slotSmartFaderControlChanged(double v) {
+    bool enabled = v > 0;
+    if (enabled == m_smartFaderEnabled) {
+        return;
+    }
+    m_smartFaderEnabled = enabled;
     updateXFaderWidgets();
 }
 
