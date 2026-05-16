@@ -93,12 +93,14 @@ void SmartFaderControl::activate() {
     m_capturedLeftBpm = leftBaseBpm.value();
     m_capturedRightBpm = rightBaseBpm.value();
 
-    // Normalize for half/double BPM relationships
+    // Normalize for half/double BPM relationships: bring the left deck into
+    // the same range as the right. If left is ~2x right, halve it; if left is
+    // ~½x right, double it.
     double multiplier = normalizeBpmMultiplier(m_capturedLeftBpm, m_capturedRightBpm);
     if (multiplier == kBpmDouble) {
-        m_capturedLeftBpm *= 2.0;
-    } else if (multiplier == kBpmHalve) {
         m_capturedLeftBpm /= 2.0;
+    } else if (multiplier == kBpmHalve) {
+        m_capturedLeftBpm *= 2.0;
     }
 
     // Save current sync modes for restoration
@@ -204,9 +206,9 @@ void SmartFaderControl::process() {
     double normalizedLeft = currentLeftBase;
     double multiplier = normalizeBpmMultiplier(currentLeftBase, currentRightBase);
     if (multiplier == kBpmDouble) {
-        normalizedLeft *= 2.0;
-    } else if (multiplier == kBpmHalve) {
         normalizedLeft /= 2.0;
+    } else if (multiplier == kBpmHalve) {
+        normalizedLeft *= 2.0;
     }
     if (std::abs(normalizedLeft - m_capturedLeftBpm) > kBpmChangeThreshold ||
             std::abs(currentRightBase - m_capturedRightBpm) > kBpmChangeThreshold) {
