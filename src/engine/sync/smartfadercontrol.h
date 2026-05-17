@@ -16,6 +16,12 @@ class EngineSync;
 /// which smoothly transitions from the left deck's BPM to the right
 /// deck's BPM as the crossfader moves. The InternalClock is used as
 /// the sync leader, and both decks follow it.
+///
+/// Sync's automatic half/double BPM matching is suppressed on the
+/// followers while smart fader is active, so the deck rate is always
+/// `leader_bpm / file_bpm` (i.e. the leader BPM is interpolated
+/// strictly between the two real file BPMs, with no surprise doubling
+/// or halving of either deck).
 class SmartFaderControl {
   public:
     SmartFaderControl(const QString& group, EngineSync* pEngineSync);
@@ -31,9 +37,6 @@ class SmartFaderControl {
     /// Directly update InternalClock BPM and synchronously propagate to followers.
     void setLeaderBpmDirect(double bpm);
 
-    /// Normalize BPMs for half/double relationships (e.g., 70 vs 140).
-    static double normalizeBpmMultiplier(double myBpm, double targetBpm);
-
     EngineSync* m_pEngineSync;
 
     // Controls exposed to controllers/QML
@@ -47,8 +50,8 @@ class SmartFaderControl {
     PollingControlProxy m_crossfader;
 
     // State
-    double m_capturedLeftBpm;
-    double m_capturedRightBpm;
+    double m_lastLeftFileBpm;
+    double m_lastRightFileBpm;
     bool m_bWasActive;
 
     // Saved sync modes for restoration on deactivate

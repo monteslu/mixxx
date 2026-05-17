@@ -276,6 +276,14 @@ void SyncControl::notifyLeaderParamSource() {
     m_leaderBpmAdjustFactor = kBpmUnity;
 }
 
+void SyncControl::setLeaderBpmAdjustFactor(double factor) {
+    if (m_leaderBpmAdjustFactor == factor) {
+        return;
+    }
+    m_leaderBpmAdjustFactor = factor;
+    updateTargetBeatDistance();
+}
+
 void SyncControl::reinitLeaderParams(
         double beatDistance, mixxx::Bpm baseBpm, mixxx::Bpm bpm) {
     if (kLogger.traceEnabled()) {

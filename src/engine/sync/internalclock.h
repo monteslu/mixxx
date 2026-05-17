@@ -57,6 +57,8 @@ class InternalClock : public QObject, public Clock, public Syncable {
     mixxx::Bpm getBaseBpm() const override;
     void updateLeaderBpm(mixxx::Bpm bpm) override;
     void notifyLeaderParamSource() override;
+    void setLeaderBpmAdjustFactor(double /*factor*/) override {
+    }
     mixxx::Bpm getBpm() const override;
     void updateInstantaneousBpm(mixxx::Bpm bpm) override;
     void reinitLeaderParams(double beatDistance, mixxx::Bpm baseBpm, mixxx::Bpm bpm) override;

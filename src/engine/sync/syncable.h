@@ -141,6 +141,11 @@ class Syncable {
     // half/double adjustment so bpms are initialized correctly.
     virtual void notifyLeaderParamSource() = 0;
 
+    // Force the syncable's internal half/double leader-BPM adjust factor.
+    // Used by SmartFaderControl to disable sync's automatic half/double
+    // matching while it owns rate interpolation.
+    virtual void setLeaderBpmAdjustFactor(double factor) = 0;
+
     // Perform a reset of Leader parameters. This function also triggers recalculation
     // of half-double multiplier.
     virtual void reinitLeaderParams(double beatDistance, mixxx::Bpm baseBpm, mixxx::Bpm bpm) = 0;

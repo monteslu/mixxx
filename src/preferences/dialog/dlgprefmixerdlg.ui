@@ -195,7 +195,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>When enabled, the crossfader smoothly interpolates the BPM of both decks during the transition.</string>
+         <string>When enabled, the crossfader smoothly interpolates the BPM of both decks during the transition. Works best with Keylock enabled on both decks to avoid pitch artifacts at extreme tempo shifts.</string>
         </property>
         <property name="text">
          <string>Enable Smart Fader (tempo blending)</string>

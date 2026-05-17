@@ -67,6 +67,7 @@ class SyncControl : public EngineControl, public Syncable {
     // SyncableListener::notifyBpmChanged or signal loops could occur.
     void updateLeaderBpm(mixxx::Bpm bpm) override;
     void notifyLeaderParamSource() override;
+    void setLeaderBpmAdjustFactor(double factor) override;
     void reinitLeaderParams(double beatDistance, mixxx::Bpm baseBpm, mixxx::Bpm bpm) override;
 
     // Must never result in a call to
